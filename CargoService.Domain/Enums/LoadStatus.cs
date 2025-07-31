@@ -4,9 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CargoService.Application.DTOs
+namespace CargoService.Domain.Enums
 {
-    class _
+    public enum LoadStatus
     {
+        Open,
+        Assigned,
+        Completed,
+        Cancelled,
     }
 }

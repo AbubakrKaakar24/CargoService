@@ -7,8 +7,6 @@
         public T? Value { get; private set; }
         public List<ValidationError>? Errors { get; private set; }
 
-        public bool IsFailure => !Success;
-
         private Result() { }
 
         public static Result<T> SuccessResult(T? value)

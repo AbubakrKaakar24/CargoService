@@ -12,7 +12,7 @@ namespace CargoService.Domain.Entities
         [Key]
         public int Id { get; set; }
         public  int LoadId { get; set; }
-        public string FleetId { get; set; }
+        public int FleetId { get; set; }
         public decimal Price { get; set; }
         public DateTime BidTime { get; set; }
         

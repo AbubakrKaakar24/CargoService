@@ -1,4 +1,5 @@
 ﻿using CargoService.Domain.Entities;
+using CargoService.Infrastructure.EntityConfigurations;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -16,8 +17,10 @@ namespace CargoService.Infrastructure.DBContext
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(BidConfigurations).Assembly);
+
         }
-       public DbSet<Load> Loads { get; set; }
+        public DbSet<Load> Loads { get; set; }
        public DbSet<Bid> bids { get; set; }
        public DbSet<Fleet> Fleets { get; set; }
        public DbSet<Trip> Trips { get; set; }

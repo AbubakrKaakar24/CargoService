@@ -10,7 +10,7 @@ namespace CargoService.Application.DTOs.Bids
     public class BidAddDto
     {
         public int LoadId { get; set; }
-        public string FleetId { get; set; }
+        public int FleetId { get; set; }
         public decimal Price { get; set; }
         public DateTime BidTime { get; set; }
 

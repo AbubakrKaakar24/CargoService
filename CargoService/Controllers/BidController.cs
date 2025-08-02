@@ -26,6 +26,9 @@ namespace CargoService.API.Controllers
         public async Task<ActionResult<BidAddDto>> CreateBid([FromBody] BidAddDto bidAddDto) => HandleResultResponse(await _bidService.CreateBid(bidAddDto));
 
         [HttpPut("id")]
-        public async Task<Action>
+        public async Task<ActionResult<BidResponseDto>> UpdateBid(int id, [FromBody] BidAddDto bidAddDto)
+            => HandleResultResponse(await _bidService.UpdateBid(id, bidAddDto));
+        [HttpDelete("id")]
+        public async Task<ActionResult<BidResponseDto>> DeleteBid(int id) => HandleResultResponse(await _bidService.DeleteBid(id));
     }
 }

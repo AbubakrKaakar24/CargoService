@@ -60,7 +60,7 @@ namespace CargoService.Application.Services
             return Result<LoadResponseDto>.SuccessResult(_mapper.Map<LoadResponseDto>(entity));
         }
 
-        public async Task<Result<LoadResponseDto>> UpdateLoad(int id, LoadAddDto dto)
+        public async Task<Result<LoadResponseDto>> UpdateLoad(int id, LoadUpdateDto dto)
         {
             var entity = await _unitOfWork.LoadRepository.GetById(id);
             if (entity == null)

@@ -1,6 +1,7 @@
 using CargoService.Application.Extension;
 using CargoService.Infrastructure.DBContext;
 using CargoService.Infrastructure.Extension;
+using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,7 @@ builder.Services.AddSwaggerGen();builder.Services.AddDbContext<AppDBContext>(opt
 
 builder.Services.ConfigureInfrastructureServices(builder.Configuration);
 builder.Services.ConfigureApplicationService(builder.Configuration);
+builder.Services.AddFluentValidationAutoValidation();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

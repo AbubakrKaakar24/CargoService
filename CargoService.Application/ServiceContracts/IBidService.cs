@@ -11,7 +11,7 @@ namespace CargoService.Application.ServiceContracts
     public interface IBidService
     {
         public Task<Result<BidAddDto>> CreateBid(BidAddDto bidAddDto);
-        public Task<Result<BidResponseDto>> UpdateBid(int id, BidAddDto bidAddDto) ;
+        public Task<Result<BidResponseDto>> UpdateBid(int id, BidUpdateDto bidUpdateDto) ;
         public Task<Result<BidResponseDto>> DeleteBid(int id);
         public Task<Result<BidResponseDto>> GetBid(int id);
         public Task<Result<IEnumerable<BidResponseDto>>> GetAllBids();

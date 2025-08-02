@@ -14,6 +14,5 @@ namespace CargoService.Application.DTOs.Trips
         public int DriverId { get; set; }
         public TripStatus tripStatus { get; set; }
         public DateTime StartTime { get; set; }
-        public Load? Load { get; set; }
     }
 }

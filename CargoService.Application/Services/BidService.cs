@@ -3,6 +3,7 @@ using CargoService.Application.Common;
 using CargoService.Application.DTOs.Bids;
 using CargoService.Application.ServiceContracts;
 using CargoService.Domain.Entities;
+using CargoService.Domain.Enums;
 using CargoService.Domain.RepositoryContracts.Base;
 
 namespace CargoService.Application.Services
@@ -19,7 +20,19 @@ namespace CargoService.Application.Services
         }
 
         public async Task<Result<BidAddDto>> CreateBid(BidAddDto dto)
-        {
+        {   
+            var load= await _unitOfWork.LoadRepository.GetById(dto.LoadId);
+            if (load == null)
+                return Result<BidAddDto>.FailureResult($"Load with ID {dto.LoadId} not found.");
+
+            else if (load.LoadStatus != LoadStatus.Open)
+                return Result<BidAddDto>.FailureResult($"Load with ID {dto.LoadId} is not open for bidding.");
+        
+            var bid= await _unitOfWork.BidRepository.GetFirstOrDefault(b => b.LoadId == dto.LoadId && b.FleetId == dto.FleetId);
+           
+            if(bid != null)
+                return Result<BidAddDto>.FailureResult($"Bid already exists for this Fleet.");
+            
             var entity = _mapper.Map<Bid>(dto);
             await _unitOfWork.BidRepository.Add(entity);
             await _unitOfWork.SaveChangesAsync(CancellationToken.None);
@@ -55,12 +68,16 @@ namespace CargoService.Application.Services
             return Result<BidResponseDto>.SuccessResult(_mapper.Map<BidResponseDto>(entity));
         }
 
-        public async Task<Result<BidResponseDto>> UpdateBid(int id, BidAddDto bidAddDto)
+        public async Task<Result<BidResponseDto>> UpdateBid(int id, BidUpdateDto bidUpdateDto)
         {
-           var entity= await _unitOfWork.BidRepository.GetFirstOrDefault(b=> b.Id==id);
+            var load = await _unitOfWork.LoadRepository.GetById(bidUpdateDto.LoadId);
+
+            if (load.LoadStatus != LoadStatus.Open)
+                return Result<BidResponseDto>.FailureResult($"Load with id {bidUpdateDto.LoadId} is closed. You can not update!");
+                var entity = await _unitOfWork.BidRepository.GetFirstOrDefault(b => b.Id == id);
             if (entity == null)
                 return Result<BidResponseDto>.NotFoundResult(id);
-            _mapper.Map(bidAddDto, entity);
+            _mapper.Map(bidUpdateDto, entity);
             await _unitOfWork.SaveChangesAsync(CancellationToken.None);
             return Result<BidResponseDto>.SuccessResult(_mapper.Map<BidResponseDto>(entity));
         }

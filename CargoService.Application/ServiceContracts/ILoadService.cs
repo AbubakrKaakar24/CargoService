@@ -8,7 +8,7 @@ namespace CargoService.Application.ServiceContracts
     public interface ILoadService
     {
         Task<Result<LoadAddDto>> CreateLoad(LoadAddDto loadAddDto);
-        Task<Result<LoadResponseDto>> UpdateLoad(int id, LoadAddDto loadAddDto);
+        Task<Result<LoadResponseDto>> UpdateLoad(int id, LoadUpdateDto loadUpdateDto);
         Task<Result<LoadResponseDto>> DeleteLoad(int id);
         Task<Result<LoadResponseDto>> GetLoad(int id);
         Task<Result<IEnumerable<LoadResponseDto>>> GetAllLoads();

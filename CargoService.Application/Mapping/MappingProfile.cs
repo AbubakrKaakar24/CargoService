@@ -17,6 +17,7 @@ namespace CargoService.Application.Mapping
         public MappingProfile() { 
             CreateMap<Load, LoadAddDto>().ReverseMap();
             CreateMap<Load, LoadResponseDto>();
+            CreateMap<Load, LoadUpdateDto>().ReverseMap();
             CreateMap<Bid, BidAddDto>().ReverseMap();
             CreateMap<Bid, BidResponseDto>();
             CreateMap<Fleet, FleetAddDto>().ReverseMap();

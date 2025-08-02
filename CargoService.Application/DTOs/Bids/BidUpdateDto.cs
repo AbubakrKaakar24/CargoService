@@ -1,5 +1,4 @@
-﻿using CargoService.Domain.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CargoService.Application.DTOs.Bids
 {
-    public class BidAddDto
+    public class BidUpdateDto
     {
         public int LoadId { get; set; }
         public int FleetId { get; set; }

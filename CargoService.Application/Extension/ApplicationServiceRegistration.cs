@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using System.Reflection;
+using FluentValidation;
 
 
 namespace CargoService.Application.Extension
@@ -22,6 +23,7 @@ namespace CargoService.Application.Extension
             services.AddScoped<ILoadService, LoadService>();
             services.AddScoped<IBidService, BidService>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
             return services;
         }
             }

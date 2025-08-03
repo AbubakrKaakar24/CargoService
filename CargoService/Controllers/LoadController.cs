@@ -29,13 +29,17 @@ namespace CargoService.API.Controllers
         public async Task<ActionResult<LoadResponseDto>> GetLoad(int id) => HandleResultResponse(
             await _loadService.GetLoad(id)
             );
-        [HttpPut("{id}")]
+        [HttpPatch("{id}")]
         public async Task<ActionResult<LoadResponseDto>> UpdateLoad(int id, [FromBody] LoadUpdateDto dto) => HandleResultResponse(
             await _loadService.UpdateLoad(id, dto)
             );
         [HttpDelete("{id}")]
         public async Task<ActionResult<LoadResponseDto>> DeleteLoad(int id) => HandleResultResponse(
             await _loadService.DeleteLoad(id)
+            );
+        [HttpPatch("{id}/accept")]
+        public async Task<ActionResult<LoadResponseDto>> AcceptLoad(int id) => HandleResultResponse(
+            await _loadService.AcceptLoad(id)
             );
 
 

@@ -3,6 +3,7 @@ using CargoService.Application.Common;
 using CargoService.Application.DTOs.Loads;
 using CargoService.Application.ServiceContracts;
 using CargoService.Domain.Entities;
+using CargoService.Domain.Enums;
 using CargoService.Domain.RepositoryContracts.Base;
 using System.Collections.Generic;
 using System.Linq;
@@ -67,6 +68,28 @@ namespace CargoService.Application.Services
                 return Result<LoadResponseDto>.NotFoundResult(id);
 
             _mapper.Map(dto, entity);
+            await _unitOfWork.SaveChangesAsync(CancellationToken.None);
+            return Result<LoadResponseDto>.SuccessResult(_mapper.Map<LoadResponseDto>(entity));
+        }
+
+        public async Task<Result<LoadResponseDto>> AcceptLoad(int LoadId)
+        {
+            var entity = await _unitOfWork.LoadRepository.GetFirstOrDefault(l=>l.Id==LoadId);
+            if (entity == null)
+                return Result<LoadResponseDto>.NotFoundResult(LoadId);
+            if (entity.LoadStatus != LoadStatus.Open)
+                return Result<LoadResponseDto>.FailureResult($"Load with ID {LoadId} is not open for accepting.");
+            var random = new Random();
+            var randomId = random.Next(1, 100);
+            var trip = new Trip
+            {
+                LoadId = entity.Id,
+                DriverId = randomId, // Simulating a driver ID, this should be replaced with actual driver ID logic
+                tripStatus = TripStatus.NotStarted,
+                StartTime = DateTime.UtcNow
+            };
+            await _unitOfWork.TripRepository.Add(trip);
+            entity.LoadStatus = LoadStatus.Assigned;
             await _unitOfWork.SaveChangesAsync(CancellationToken.None);
             return Result<LoadResponseDto>.SuccessResult(_mapper.Map<LoadResponseDto>(entity));
         }

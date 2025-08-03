@@ -12,5 +12,6 @@ namespace CargoService.Application.ServiceContracts
         Task<Result<LoadResponseDto>> DeleteLoad(int id);
         Task<Result<LoadResponseDto>> GetLoad(int id);
         Task<Result<IEnumerable<LoadResponseDto>>> GetAllLoads();
+        Task<Result<LoadResponseDto>> AcceptLoad(int id);
     }
 }

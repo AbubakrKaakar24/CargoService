@@ -23,7 +23,12 @@ namespace CargoService.Application.Extension
             services.AddScoped<ILoadService, LoadService>();
             services.AddScoped<IBidService, BidService>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly()); 
+            //services.AddStackExchangeRedisCache(options =>
+            //{
+            //    options.Configuration = "localhost:6379"; 
+            //    options.InstanceName = "CargoService_";   
+            //});
             return services;
         }
             }

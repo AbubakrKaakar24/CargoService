@@ -9,6 +9,6 @@ namespace CargoService.Domain.Enums
     public enum LoadStatus
     {
         Open=1,
-        Closed=2,
+        Assigned=2,
     }
 }

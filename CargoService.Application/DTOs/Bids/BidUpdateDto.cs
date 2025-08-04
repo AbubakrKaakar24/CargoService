@@ -8,9 +8,9 @@ namespace CargoService.Application.DTOs.Bids
 {
     public class BidUpdateDto
     {
-        public int LoadId { get; set; }
-        public int FleetId { get; set; }
-        public decimal Price { get; set; }
-        public DateTime BidTime { get; set; }
+        public int? LoadId { get; set; }
+        public int? FleetId { get; set; }
+        public decimal? Price { get; set; }
+        public DateTime? BidTime { get; set; }
     }
 }

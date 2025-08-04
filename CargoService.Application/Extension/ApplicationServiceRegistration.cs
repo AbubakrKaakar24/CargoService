@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using System.Reflection;
 using FluentValidation;
+using StackExchange.Redis;
 
 
 namespace CargoService.Application.Extension
@@ -23,7 +24,15 @@ namespace CargoService.Application.Extension
             services.AddScoped<ILoadService, LoadService>();
             services.AddScoped<IBidService, BidService>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly()); 
+            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+            services.AddSingleton<IConnectionMultiplexer>(sp =>
+            {
+                var RedisConfiguration = configuration.GetSection("Redis")["ConnectionString"];
+                return ConnectionMultiplexer.Connect(RedisConfiguration!); // "localhost:6379"
+            });
+
+            services.AddSingleton<IRedisService, RedisService>();
+
             //services.AddStackExchangeRedisCache(options =>
             //{
             //    options.Configuration = "localhost:6379"; 

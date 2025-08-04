@@ -8,27 +8,29 @@ namespace CargoService.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BidController : BaseAPIcontroller
+    public class BidsController : BaseAPIcontroller
     {
         private readonly IBidService _bidService;
-        public BidController(IBidService bidService)
+        public BidsController(IBidService bidService)
         {
             _bidService = bidService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<BidResponseDto>>> GetAllBids()=> HandleResultResponse(await _bidService.GetAllBids());
+        public async Task<ActionResult<IEnumerable<BidResponseDto>>> GetAllBids() => HandleResultResponse(await _bidService.GetAllBids());
 
-        [HttpGet("id")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<BidResponseDto>> GetBid(int id) => HandleResultResponse(await _bidService.GetBid(id));
 
         [HttpPost]
-        public async Task<ActionResult<BidAddDto>> CreateBid([FromBody] BidAddDto bidAddDto) => HandleResultResponse(await _bidService.CreateBid(bidAddDto));
+        public async Task<ActionResult<BidAddDto>> CreateBid([FromBody] BidAddDto bidAddDto) =>
+            HandleResultResponse(await _bidService.CreateBid(bidAddDto));
 
-        [HttpPut("id")]
+        [HttpPatch("{id}")]
         public async Task<ActionResult<BidResponseDto>> UpdateBid(int id, [FromBody] BidUpdateDto bidUpdateDto)
             => HandleResultResponse(await _bidService.UpdateBid(id, bidUpdateDto));
-        [HttpDelete("id")]
+
+        [HttpDelete("{id}")]
         public async Task<ActionResult<BidResponseDto>> DeleteBid(int id) => HandleResultResponse(await _bidService.DeleteBid(id));
     }
 }

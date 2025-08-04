@@ -1,4 +1,5 @@
 ﻿using CargoService.Domain.Entities;
+using CargoService.Infrastructure.DatabaseSeeders;
 using CargoService.Infrastructure.EntityConfigurations;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -18,6 +19,7 @@ namespace CargoService.Infrastructure.DBContext
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(BidConfigurations).Assembly);
+            FleetSeeder.DataSeed(modelBuilder);
 
         }
         public DbSet<Load> Loads { get; set; }

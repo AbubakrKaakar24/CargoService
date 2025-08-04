@@ -16,11 +16,12 @@ namespace CargoService.Application.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-
-        public LoadService(IUnitOfWork unitOfWork, IMapper mapper)
+        private readonly IRedisService _redisService;
+        public LoadService(IUnitOfWork unitOfWork, IMapper mapper, IRedisService redisService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _redisService = redisService;
         }
 
         public async Task<Result<LoadAddDto>> CreateLoad(LoadAddDto loadAddDto)
@@ -39,6 +40,7 @@ namespace CargoService.Application.Services
 
             await _unitOfWork.LoadRepository.Delete(entity);
             await _unitOfWork.SaveChangesAsync(CancellationToken.None);
+            await _redisService.RemoveAsync($"load:{id}");
             return Result<LoadResponseDto>.SuccessResult(_mapper.Map<LoadResponseDto>(entity));
         }
 
@@ -54,12 +56,20 @@ namespace CargoService.Application.Services
 
         public async Task<Result<LoadResponseDto>> GetLoad(int id)
         {
+            var cacheKey = $"load:{id}";
+            var cachedLoad = await _redisService.GetAsync<LoadResponseDto>(cacheKey);
+            if (cachedLoad != null)
+                return Result<LoadResponseDto>.SuccessResult(cachedLoad);
+
             var entity = await _unitOfWork.LoadRepository.GetById(id);
             if (entity == null)
                 return Result<LoadResponseDto>.NotFoundResult(id);
 
-            return Result<LoadResponseDto>.SuccessResult(_mapper.Map<LoadResponseDto>(entity));
+            var dto = _mapper.Map<LoadResponseDto>(entity);
+            await _redisService.SetAsync(cacheKey, dto);
+            return Result<LoadResponseDto>.SuccessResult(dto);
         }
+
 
         public async Task<Result<LoadResponseDto>> UpdateLoad(int id, LoadUpdateDto dto)
         {
@@ -69,6 +79,7 @@ namespace CargoService.Application.Services
 
             _mapper.Map(dto, entity);
             await _unitOfWork.SaveChangesAsync(CancellationToken.None);
+            await _redisService.RemoveAsync($"load:{id}");
             return Result<LoadResponseDto>.SuccessResult(_mapper.Map<LoadResponseDto>(entity));
         }
 

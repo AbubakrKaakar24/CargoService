@@ -25,7 +25,7 @@ namespace CargoService.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<FleetResponseDto>> GetFleet(int id)
         => HandleResultResponse(await _fleetService.GetFleet(id));
-        [HttpPut("id")]
+        [HttpPut("{id}")]
         public async Task<ActionResult<FleetResponseDto>> UpdateFleet(int id,[FromBody] FleetAddDto dto)
         => HandleResultResponse(await _fleetService.UpdateFleet(id,dto));
         [HttpDelete("{id}")]

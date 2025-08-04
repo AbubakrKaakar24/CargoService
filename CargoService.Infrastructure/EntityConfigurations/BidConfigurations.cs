@@ -14,11 +14,11 @@ namespace CargoService.Infrastructure.EntityConfigurations
         public void Configure(EntityTypeBuilder<Bid> builder)
         {
             builder.Property(b => b.Price)
-       .HasPrecision(18, 2) 
+       .HasPrecision(18, 2)
        .IsRequired();
 
             builder.HasOne(b => b.Fleet)
-                      .WithMany(f => f.Bids) 
+                      .WithMany(f => f.Bids)
                       .HasForeignKey(b => b.FleetId)
                       .OnDelete(DeleteBehavior.Cascade);
         }

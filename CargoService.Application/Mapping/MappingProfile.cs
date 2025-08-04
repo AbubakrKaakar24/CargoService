@@ -17,11 +17,15 @@ namespace CargoService.Application.Mapping
         public MappingProfile() { 
             CreateMap<Load, LoadAddDto>().ReverseMap();
             CreateMap<Load, LoadResponseDto>();
-            CreateMap<Load, LoadUpdateDto>();
             CreateMap<LoadUpdateDto, Load>()
 .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
             CreateMap<Bid, BidAddDto>().ReverseMap();
             CreateMap<Bid, BidResponseDto>();
+            CreateMap<BidUpdateDto, Bid>()
+        .ForAllMembers(opts => opts.Condition((src, dest, srcMember) =>
+            srcMember != null && (!srcMember.GetType().IsValueType || !srcMember.Equals(Activator.CreateInstance(srcMember.GetType())))
+        ));
+
             CreateMap<Fleet, FleetAddDto>().ReverseMap();
             CreateMap<Fleet, FleetResponseDto>();
             CreateMap<Trip, TripAddDto>().ReverseMap();
